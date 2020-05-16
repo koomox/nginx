@@ -76,6 +76,16 @@ jobs:
                 cp scgi_params scgi_params.default
                 cp nginx.conf nginx.conf.default
 
+            - name: Configure file
+              run: |
+                cp nginx.service ./targets/${NGINX}/
+                cp -f conf.d/nginx.conf ./targets/${NGINX}/conf/
+                
+                mkdir -p ./targets/${NGINX}/conf/conf.d 
+                cp -f default.conf ./targets/${NGINX}/conf/conf.d/
+                cp -f fastcgi_php.conf ./targets/${NGINX}/conf/conf.d/
+                cp -f nginx-ssl-php.conf ./targets/${NGINX}/conf/conf.d/
+
             - name: Deploy
               run: |
                 cd ./targets
