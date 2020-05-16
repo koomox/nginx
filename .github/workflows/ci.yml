@@ -61,7 +61,7 @@ jobs:
 
             - name: Configure
               run: |
-                mkdir -p ./targets/${NGINX}/sbin
+                mkdir -p ./targets/${NGINX}/{sbin,logs}
                 
                 cd ./${NGINX}
                 cp objs/nginx ../targets/${NGINX}/sbin/nginx
