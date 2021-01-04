@@ -12,7 +12,7 @@ jobs:
         env:
             ZLIB: zlib-1.2.11
             PCRE: pcre-8.44
-            OPENSSL: openssl-1.1.1h
+            OPENSSL: openssl-1.1.1i
             NGINX: nginx-1.18.0
 
         steps:
