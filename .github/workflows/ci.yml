@@ -11,8 +11,8 @@ jobs:
         runs-on: ubuntu-latest
         env:
             ZLIB: zlib-1.2.11
-            PCRE: pcre-8.44
-            OPENSSL: openssl-1.1.1k
+            PCRE: pcre-8.45
+            OPENSSL: openssl-1.1.1l
             NGINX: nginx-1.20.1
 
         steps:
