@@ -12,7 +12,7 @@ jobs:
         env:
             ZLIB: zlib-1.2.11
             PCRE: pcre-8.45
-            OPENSSL: openssl-1.1.1l
+            OPENSSL: openssl-1.1.1m
             NGINX: nginx-1.20.2
 
         steps:
@@ -33,7 +33,7 @@ jobs:
               run: |
                 wget https://nginx.org/download/${NGINX}.tar.gz
                 wget https://www.openssl.org/source/${OPENSSL}.tar.gz
-                wget https://ftp.exim.org/pub/pcre/${PCRE}.tar.gz
+                wget https://phoenixnap.dl.sourceforge.net/project/pcre/pcre/8.45/${PCRE}.tar.gz
                 wget https://www.zlib.net/${ZLIB}.tar.gz
 
                 tar -zxf ${OPENSSL}.tar.gz
