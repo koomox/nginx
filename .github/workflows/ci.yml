@@ -31,15 +31,10 @@ jobs:
               run: |
                 OPENSSL=$(wget -qO- --no-check-certificate https://www.openssl.org/source/ | grep -m1 -E "\"openssl-(.*).tar.gz\"" | sed -E "s/.*\"(openssl-.*).tar.gz\".*/\1/gm" )
                 ZLIB=$(wget -qO- --no-check-certificate https://zlib.net/ | grep -m1 -E "\"zlib-(.*).tar.gz\"" | sed -E "s/.*\"(zlib-.*).tar.gz\".*/\1/gm" )
-                wget --no-check-certificate https://nginx.org/download/${NGINX}.tar.gz
-                wget --no-check-certificate https://www.openssl.org/source/${OPENSSL}.tar.gz
-                wget --no-check-certificate https://ftp.exim.org/pub/pcre/${PCRE}.tar.gz
-                wget --no-check-certificate https://www.zlib.net/${ZLIB}.tar.gz
-
-                tar -zxf ${OPENSSL}.tar.gz
-                tar -zxf ${PCRE}.tar.gz
-                tar -zxf ${ZLIB}.tar.gz
-                tar -zxf ${NGINX}.tar.gz
+                wget -qO- --no-check-certificate https://nginx.org/download/${NGINX}.tar.gz | tar -xz
+                wget -qO- --no-check-certificate https://www.openssl.org/source/${OPENSSL}.tar.gz | tar -xz
+                wget -qO- --no-check-certificate https://ftp.exim.org/pub/pcre/${PCRE}.tar.gz | tar -xz
+                wget -qO- --no-check-certificate https://www.zlib.net/${ZLIB}.tar.gz | tar -xz
 
                 cd ${NGINX}
                 ./configure --prefix=/usr/local/nginx \
