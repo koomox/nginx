@@ -12,7 +12,6 @@ jobs:
         env:
             ZLIB: zlib-1.2.12
             PCRE: pcre-8.45
-            OPENSSL: openssl-1.1.1q
             NGINX: nginx-1.22.0
 
         steps:
@@ -31,10 +30,11 @@ jobs:
 
             - name: Build
               run: |
-                wget https://nginx.org/download/${NGINX}.tar.gz
-                wget https://www.openssl.org/source/${OPENSSL}.tar.gz
-                wget https://ftp.exim.org/pub/pcre/${PCRE}.tar.gz
-                wget https://www.zlib.net/${ZLIB}.tar.gz
+                OPENSSL=$(wget -qO- --no-check-certificate https://www.openssl.org/source/ | grep -m1 -E "\"openssl-(.*).tar.gz\"" | sed -E "s/.*\"(openssl-.*).tar.gz\".*/\1/gm" )
+                wget -qO- --no-check-certificate https://nginx.org/download/${NGINX}.tar.gz
+                wget -qO- --no-check-certificate ${OPENSSL}.tar.gz
+                wget -qO- --no-check-certificate https://ftp.exim.org/pub/pcre/${PCRE}.tar.gz
+                wget -qO- --no-check-certificate https://www.zlib.net/${ZLIB}.tar.gz
 
                 tar -zxf ${OPENSSL}.tar.gz
                 tar -zxf ${PCRE}.tar.gz
@@ -89,11 +89,12 @@ jobs:
             - name: Deploy
               run: |
                 cd ./targets
+                echo "FILE_DATE=_$(date +"%Y%m%d%H%M")" >> $GITHUB_ENV
                 tar czvf ${NGINX}.tar.gz ${NGINX}
                 rm -rf ${NGINX}
                 
             - name: Upload
               uses: actions/upload-artifact@master
               with:
-                name: nginx
+                name: nginx${{ env.FILE_DATE }}
                 path: ./targets/
