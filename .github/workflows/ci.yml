@@ -6,8 +6,8 @@ on:
       - master
       
 jobs:
-    build:
-        name: Build
+    build x86-64:
+        name: Build on ubuntu-latest x86-64
         runs-on: ubuntu-latest
         env:
             PCRE: pcre-8.45
@@ -77,9 +77,7 @@ jobs:
                 cp -f conf.d/nginx.conf ./targets/${NGINX}/conf/
                 
                 mkdir -p ./targets/${NGINX}/conf/conf.d
-                cp -f conf.d/default.conf ./targets/${NGINX}/conf/conf.d/
-                cp -f conf.d/fastcgi_php.conf ./targets/${NGINX}/conf/conf.d/
-                cp -f conf.d/nginx-ssl-php.conf ./targets/${NGINX}/conf/conf.d/
+				cp -f conf.d/{default.conf,fastcgi_php.conf,nginx-ssl-php.conf} ./targets/${NGINX}/conf/conf.d/
 
             - name: Deploy
               run: |
@@ -91,5 +89,91 @@ jobs:
             - name: Upload
               uses: actions/upload-artifact@master
               with:
-                name: nginx${{ env.FILE_DATE }}
+                name: nginx_x86${{ env.FILE_DATE }}
+                path: ./targets/
+
+    build ARM64:
+        name: Build on ubuntu-latest ARM64
+        runs-on: [self-hosted, linux, ARM64]
+        env:
+            PCRE: pcre-8.45
+            NGINX: nginx-1.22.0
+
+        steps:
+            - name: Checkout
+              uses: actions/checkout@master
+              with:
+                ref: master
+
+            - name: Get dependencies
+              run: |
+                sudo -E apt-get update
+                sudo -E apt-get -y install build-essential autoconf automake libtool git wget curl
+                sudo -E apt-get -y autoremove --purge
+                sudo -E apt-get clean
+                df -h
+
+            - name: Build
+              run: |
+                OPENSSL=$(wget -qO- --no-check-certificate https://www.openssl.org/source/ | grep -m1 -E "\"openssl-(.*).tar.gz\"" | sed -E "s/.*\"(openssl-.*).tar.gz\".*/\1/gm" )
+                ZLIB=$(wget -qO- --no-check-certificate https://zlib.net/ | grep -m1 -E "\"zlib-(.*).tar.gz\"" | sed -E "s/.*\"(zlib-.*).tar.gz\".*/\1/gm" )
+                wget -qO- --no-check-certificate https://nginx.org/download/${NGINX}.tar.gz | tar -xz
+                wget -qO- --no-check-certificate https://www.openssl.org/source/${OPENSSL}.tar.gz | tar -xz
+                wget -qO- --no-check-certificate https://ftp.exim.org/pub/pcre/${PCRE}.tar.gz | tar -xz
+                wget -qO- --no-check-certificate https://www.zlib.net/${ZLIB}.tar.gz | tar -xz
+
+                cd ${NGINX}
+                ./configure --prefix=/usr/local/nginx \
+                --conf-path=/etc/nginx/nginx.conf \
+                --pid-path=/var/lib/nginx/nginx.pid \
+                --lock-path=/var/lib/nginx/nginx.lock \
+                --with-http_ssl_module \
+                --with-http_v2_module \
+                --with-http_sub_module \
+                --with-http_gzip_static_module \
+                --with-http_slice_module \
+                --with-http_stub_status_module \
+                --with-stream \
+                --with-stream_ssl_module \
+                --with-pcre=../${PCRE} \
+                --with-zlib=../${ZLIB} \
+                --with-openssl=../${OPENSSL}
+                make
+
+            - name: Configure
+              run: |
+                mkdir -p ./targets/${NGINX}/{sbin,logs}
+                
+                cd ./${NGINX}
+                cp objs/nginx ../targets/${NGINX}/sbin/nginx
+                cp -R html ../targets/${NGINX}/
+                cp -R conf ../targets/${NGINX}/
+                
+                cd ../targets/${NGINX}/conf
+                cp mime.types mime.types.default
+                cp fastcgi_params fastcgi_params.default
+                cp fastcgi.conf fastcgi.conf.default
+                cp uwsgi_params uwsgi_params.default
+                cp scgi_params scgi_params.default
+                cp nginx.conf nginx.conf.default
+
+            - name: Configure file
+              run: |
+                cp nginx.service ./targets/${NGINX}/
+                cp -f conf.d/nginx.conf ./targets/${NGINX}/conf/
+                
+                mkdir -p ./targets/${NGINX}/conf/conf.d
+				cp -f conf.d/{default.conf,fastcgi_php.conf,nginx-ssl-php.conf} ./targets/${NGINX}/conf/conf.d/
+
+            - name: Deploy
+              run: |
+                cd ./targets
+                echo "FILE_DATE=_$(date +"%Y%m%d%H%M")" >> $GITHUB_ENV
+                tar czvf ${NGINX}.tar.gz ${NGINX}
+                rm -rf ${NGINX}
+                
+            - name: Upload
+              uses: actions/upload-artifact@master
+              with:
+                name: nginx_arm64${{ env.FILE_DATE }}
                 path: ./targets/
