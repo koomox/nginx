@@ -77,7 +77,7 @@ jobs:
                 cp -f conf.d/nginx.conf ./targets/${NGINX}/conf/
                 
                 mkdir -p ./targets/${NGINX}/conf/conf.d
-				cp -f conf.d/{default.conf,fastcgi_php.conf,nginx-ssl-php.conf} ./targets/${NGINX}/conf/conf.d/
+                cp -f conf.d/{default.conf,fastcgi_php.conf,nginx-ssl-php.conf} ./targets/${NGINX}/conf/conf.d/
 
             - name: Deploy
               run: |
@@ -163,7 +163,7 @@ jobs:
                 cp -f conf.d/nginx.conf ./targets/${NGINX}/conf/
                 
                 mkdir -p ./targets/${NGINX}/conf/conf.d
-				cp -f conf.d/{default.conf,fastcgi_php.conf,nginx-ssl-php.conf} ./targets/${NGINX}/conf/conf.d/
+                cp -f conf.d/{default.conf,fastcgi_php.conf,nginx-ssl-php.conf} ./targets/${NGINX}/conf/conf.d/
 
             - name: Deploy
               run: |
