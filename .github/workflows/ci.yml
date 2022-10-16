@@ -10,7 +10,6 @@ jobs:
         name: Build
         runs-on: ubuntu-latest
         env:
-            ZLIB: zlib-1.2.12
             PCRE: pcre-8.45
             NGINX: nginx-1.22.0
 
@@ -31,6 +30,7 @@ jobs:
             - name: Build
               run: |
                 OPENSSL=$(wget -qO- --no-check-certificate https://www.openssl.org/source/ | grep -m1 -E "\"openssl-(.*).tar.gz\"" | sed -E "s/.*\"(openssl-.*).tar.gz\".*/\1/gm" )
+                ZLIB=$(wget -qO- --no-check-certificate https://zlib.net/ | grep -m1 -E "\"zlib-(.*).tar.gz\"" | sed -E "s/.*\"(zlib-.*).tar.gz\".*/\1/gm" )
                 wget --no-check-certificate https://nginx.org/download/${NGINX}.tar.gz
                 wget --no-check-certificate https://www.openssl.org/source/${OPENSSL}.tar.gz
                 wget --no-check-certificate https://ftp.exim.org/pub/pcre/${PCRE}.tar.gz
