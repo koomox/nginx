@@ -32,7 +32,7 @@ jobs:
               run: |
                 OPENSSL=$(wget -qO- --no-check-certificate https://www.openssl.org/source/ | grep -m1 -E "\"openssl-(.*).tar.gz\"" | sed -E "s/.*\"(openssl-.*).tar.gz\".*/\1/gm" )
                 wget -qO- --no-check-certificate https://nginx.org/download/${NGINX}.tar.gz
-                wget -qO- --no-check-certificate ${OPENSSL}.tar.gz
+                wget -qO- --no-check-certificate https://www.openssl.org/source/${OPENSSL}.tar.gz
                 wget -qO- --no-check-certificate https://ftp.exim.org/pub/pcre/${PCRE}.tar.gz
                 wget -qO- --no-check-certificate https://www.zlib.net/${ZLIB}.tar.gz
 
