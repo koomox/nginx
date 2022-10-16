@@ -94,7 +94,7 @@ jobs:
 
     build_ARM64:
         name: Build on ubuntu-latest ARM64
-        runs-on: [self-hosted, linux, ARM64]
+        runs-on: [ubuntu-latest, linux, ARM64]
         env:
             PCRE: pcre-8.45
             NGINX: nginx-1.22.0
