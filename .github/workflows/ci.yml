@@ -6,7 +6,7 @@ on:
       - master
       
 jobs:
-    build x86-64:
+    build_x86-64:
         name: Build on ubuntu-latest x86-64
         runs-on: ubuntu-latest
         env:
@@ -92,7 +92,7 @@ jobs:
                 name: nginx_x86${{ env.FILE_DATE }}
                 path: ./targets/
 
-    build ARM64:
+    build_ARM64:
         name: Build on ubuntu-latest ARM64
         runs-on: [self-hosted, linux, ARM64]
         env:
