@@ -90,7 +90,7 @@ jobs:
       - name: Upload
         uses: actions/upload-artifact@master
         with:
-          name: nginx_x86${{ env.FILE_DATE }}
+          name: ${{ env.NGINX }}${{ env.FILE_DATE }}
           path: ./targets/
 
   build_1180_x64_job:
@@ -174,5 +174,5 @@ jobs:
       - name: Upload
         uses: actions/upload-artifact@master
         with:
-          name: nginx_x86${{ env.FILE_DATE }}
+          name: ${{ env.NGINX }}${{ env.FILE_DATE }}
           path: ./targets/
