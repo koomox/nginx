@@ -9,11 +9,11 @@ env:
     PCRE: pcre-8.45
 
 jobs:
-  build_1220_x64_job:
-    name: Build on ubuntu-latest with nginx 1.22.0 x86-64
+  build_1221_x64_job:
+    name: Build on ubuntu-latest with nginx 1.22.1 x86-64
     runs-on: ubuntu-latest
     env:
-      NGINX: nginx-1.22.0
+      NGINX: nginx-1.22.1
 
     steps:
       - name: Checkout
