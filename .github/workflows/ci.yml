@@ -122,7 +122,7 @@ jobs:
           wget -qO- --no-check-certificate https://www.zlib.net/${ZLIB}.tar.gz | tar -xz
           echo "NGINX=${NGINX}" >> $GITHUB_ENV
 
-          cd ${env.NGINX}
+          cd ${NGINX}
           ./configure --prefix=/usr/local/nginx \
           --conf-path=/etc/nginx/nginx.conf \
           --pid-path=/var/lib/nginx/nginx.pid \
