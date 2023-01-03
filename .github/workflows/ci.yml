@@ -6,10 +6,10 @@ on:
       - master
 
 env:
-    PCRE: pcre-8.45
+    PCRE: pcre2-10.37
 
 jobs:
-  build_1221_x64_job:
+  nginx_122x_amd64:
     name: Build on ubuntu-latest with nginx 1.22.1 x86-64
     runs-on: ubuntu-latest
     env:
@@ -30,7 +30,7 @@ jobs:
           df -h
       - name: Build
         run: |
-          OPENSSL=$(wget -qO- --no-check-certificate https://www.openssl.org/source/ | grep -m1 -E "\"openssl-1.(.*).tar.gz\"" | sed -E "s/.*\"(openssl-.*).tar.gz\".*/\1/gm" )
+          OPENSSL=$(wget -qO- --no-check-certificate https://www.openssl.org/source/ | grep -m1 -E "\"openssl-3(\.[0-9]+){0,2}.tar.gz\"" | sed -E "s/.*\"(openssl-.*).tar.gz\".*/\1/gm" )
           ZLIB=$(wget -qO- --no-check-certificate https://zlib.net/ | grep -m1 -E "\"zlib-(.*).tar.gz\"" | sed -E "s/.*\"(zlib-.*).tar.gz\".*/\1/gm" )
           wget -qO- --no-check-certificate https://nginx.org/download/${NGINX}.tar.gz | tar -xz
           wget -qO- --no-check-certificate https://www.openssl.org/source/${OPENSSL}.tar.gz | tar -xz
@@ -93,7 +93,7 @@ jobs:
           name: ${{ env.NGINX }}${{ env.FILE_DATE }}
           path: ./targets/
 
-  build_1180_x64_job:
+  nginx_118x_amd64:
     name: Build on ubuntu-latest with nginx 1.18.0 x86-64
     runs-on: ubuntu-latest
     env:
