@@ -11,10 +11,8 @@ env:
 
 jobs:
   nginx_122x_amd64:
-    name: Build on ubuntu-latest with nginx 1.22.1 x86-64
+    name: Build nginx 1.22.x amd64
     runs-on: ubuntu-latest
-    env:
-      NGINX: nginx-1.22.1
 
     steps:
       - name: Checkout
@@ -31,6 +29,7 @@ jobs:
           df -h
       - name: Build
         run: |
+          NGINX=$(wget -qO- --no-check-certificate https://nginx.org/en/download.html | grep -m1 -E "nginx-1.22.([0-9]+).tar.gz" | sed -E "s/.*(nginx-1.22.[0-9]+).tar.gz.*/\1/gm" )
           OPENSSL=$(wget -qO- --no-check-certificate https://www.openssl.org/source/ | grep -m1 -E "\"openssl-3(\.[0-9]+){0,2}.tar.gz\"" | sed -E "s/.*\"(openssl-.*).tar.gz\".*/\1/gm" )
           ZLIB=$(wget -qO- --no-check-certificate https://zlib.net/ | grep -m1 -E "\"zlib-([0-9]+\.){0,3}tar.gz\"" | sed -E "s/.*\"(zlib-.*).tar.gz\".*/\1/gm" )
           wget -qO- --no-check-certificate https://nginx.org/download/${NGINX}.tar.gz | tar -xz
@@ -95,10 +94,8 @@ jobs:
           path: ./targets/
 
   nginx_118x_amd64:
-    name: Build on ubuntu-latest with nginx 1.18.0 x86-64
+    name: Build nginx 1.18.x amd64
     runs-on: ubuntu-latest
-    env:
-      NGINX: nginx-1.18.0
 
     steps:
       - name: Checkout
@@ -115,6 +112,7 @@ jobs:
           df -h
       - name: Build
         run: |
+          NGINX=$(wget -qO- --no-check-certificate https://nginx.org/en/download.html | grep -m1 -E "nginx-1.18.([0-9]+).tar.gz" | sed -E "s/.*(nginx-1.18.[0-9]+).tar.gz.*/\1/gm" )
           OPENSSL=$(wget -qO- --no-check-certificate https://www.openssl.org/source/ | grep -m1 -E "\"openssl-1(\.[0-9]+){0,2}\w+.tar.gz\"" | sed -E "s/.*\"(openssl-.*).tar.gz\".*/\1/gm" )
           ZLIB=$(wget -qO- --no-check-certificate https://zlib.net/ | grep -m1 -E "\"zlib-([0-9]+\.){0,3}tar.gz\"" | sed -E "s/.*\"(zlib-.*).tar.gz\".*/\1/gm" )
           wget -qO- --no-check-certificate https://nginx.org/download/${NGINX}.tar.gz | tar -xz
