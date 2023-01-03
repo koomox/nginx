@@ -58,14 +58,14 @@ jobs:
 
       - name: Configure
         run: |
-          mkdir -p ./targets/${env.NGINX}/{sbin,logs}
+          mkdir -p ./targets/${{ env.NGINX }}/{sbin,logs}
                 
-          cd ./${env.NGINX}
-          cp objs/nginx ../targets/${env.NGINX}/sbin/nginx
-          cp -R html ../targets/${env.NGINX}/
-          cp -R conf ../targets/${env.NGINX}/
+          cd ./${{ env.NGINX }}
+          cp objs/nginx ../targets/${{ env.NGINX }}/sbin/nginx
+          cp -R html ../targets/${{ env.NGINX }}/
+          cp -R conf ../targets/${{ env.NGINX }}/
                 
-          cd ../targets/${env.NGINX}/conf
+          cd ../targets/${{ env.NGINX }}/conf
           cp mime.types mime.types.default
           cp fastcgi_params fastcgi_params.default
           cp fastcgi.conf fastcgi.conf.default
@@ -75,18 +75,18 @@ jobs:
 
       - name: Configure file
         run: |
-          cp nginx.service ./targets/${env.NGINX}/
-          cp -f conf.d/nginx.conf ./targets/${env.NGINX}/conf/
+          cp nginx.service ./targets/${{ env.NGINX }}/
+          cp -f conf.d/nginx.conf ./targets/${{ env.NGINX }}/conf/
                 
-          mkdir -p ./targets/${env.NGINX}/conf/conf.d
-          cp -f conf.d/{default.conf,fastcgi_php.conf,nginx-ssl-php.conf} ./targets/${env.NGINX}/conf/conf.d/
+          mkdir -p ./targets/${{ env.NGINX }}/conf/conf.d
+          cp -f conf.d/{default.conf,fastcgi_php.conf,nginx-ssl-php.conf} ./targets/${{ env.NGINX }}/conf/conf.d/
 
       - name: Deploy
         run: |
           cd ./targets
           echo "FILE_DATE=_$(date +"%Y%m%d%H%M")" >> $GITHUB_ENV
-          tar czvf ${env.NGINX}.tar.gz ${env.NGINX}
-          rm -rf ${env.NGINX}
+          tar czvf ${{ env.NGINX }}.tar.gz ${{ env.NGINX }}
+          rm -rf ${{ env.NGINX }}
                 
       - name: Upload
         uses: actions/upload-artifact@master
@@ -142,14 +142,14 @@ jobs:
 
       - name: Configure
         run: |
-          mkdir -p ./targets/${env.NGINX}/{sbin,logs}
+          mkdir -p ./targets/${{ env.NGINX }}/{sbin,logs}
                 
-          cd ./${env.NGINX}
-          cp objs/nginx ../targets/${env.NGINX}/sbin/nginx
-          cp -R html ../targets/${env.NGINX}/
-          cp -R conf ../targets/${env.NGINX}/
+          cd ./${{ env.NGINX }}
+          cp objs/nginx ../targets/${{ env.NGINX }}/sbin/nginx
+          cp -R html ../targets/${{ env.NGINX }}/
+          cp -R conf ../targets/${{ env.NGINX }}/
                 
-          cd ../targets/${env.NGINX}/conf
+          cd ../targets/${{ env.NGINX }}/conf
           cp mime.types mime.types.default
           cp fastcgi_params fastcgi_params.default
           cp fastcgi.conf fastcgi.conf.default
@@ -159,18 +159,18 @@ jobs:
 
       - name: Configure file
         run: |
-          cp nginx.service ./targets/${env.NGINX}/
-          cp -f conf.d/nginx.conf ./targets/${env.NGINX}/conf/
+          cp nginx.service ./targets/${{ env.NGINX }}/
+          cp -f conf.d/nginx.conf ./targets/${{ env.NGINX }}/conf/
                 
-          mkdir -p ./targets/${env.NGINX}/conf/conf.d
-          cp -f conf.d/{default.conf,fastcgi_php.conf,nginx-ssl-php.conf} ./targets/${env.NGINX}/conf/conf.d/
+          mkdir -p ./targets/${{ env.NGINX }}/conf/conf.d
+          cp -f conf.d/{default.conf,fastcgi_php.conf,nginx-ssl-php.conf} ./targets/${{ env.NGINX }}/conf/conf.d/
 
       - name: Deploy
         run: |
           cd ./targets
           echo "FILE_DATE=_$(date +"%Y%m%d%H%M")" >> $GITHUB_ENV
-          tar czvf ${env.NGINX}.tar.gz ${env.NGINX}
-          rm -rf ${env.NGINX}
+          tar czvf ${{ env.NGINX }}.tar.gz ${{ env.NGINX }}
+          rm -rf ${{ env.NGINX }}
                 
       - name: Upload
         uses: actions/upload-artifact@master
