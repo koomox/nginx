@@ -29,9 +29,9 @@ jobs:
           df -h
       - name: Build
         run: |
-          NGINX=$(wget -qO- --no-check-certificate https://nginx.org/en/download.html | grep -E -o -m1 "nginx-1.22.([0-9]+)" | head -n1 )
-          OPENSSL=$(wget -qO- --no-check-certificate https://www.openssl.org/source/ | grep -E -o -m1 "openssl-3(\.[0-9]+){0,2}" | head -n1 )
-          ZLIB=$(wget -qO- --no-check-certificate https://zlib.net/ | grep -E -o -m1 "zlib-1.2.([0-9]+)" | head -n1 )
+          NGINX=$(wget -qO- --no-check-certificate https://nginx.org/en/download.html | grep -m1 -E "nginx-1.22.([0-9]+).tar.gz" | sed -E "s/.*(nginx-1.22.[0-9]+).tar.gz.*/\1/gm" )
+          OPENSSL=$(wget -qO- --no-check-certificate https://www.openssl.org/source/ | grep -m1 -E "\"openssl-3(\.[0-9]+){0,2}.tar.gz\"" | sed -E "s/.*\"(openssl-.*).tar.gz\".*/\1/gm" )
+          ZLIB=$(wget -qO- --no-check-certificate https://zlib.net/ | grep -m1 -E "\"zlib-([0-9]+\.){0,3}tar.gz\"" | sed -E "s/.*\"(zlib-.*).tar.gz\".*/\1/gm" )
           wget -qO- --no-check-certificate https://nginx.org/download/${NGINX}.tar.gz | tar -xz
           wget -qO- --no-check-certificate https://www.openssl.org/source/${OPENSSL}.tar.gz | tar -xz
           wget -qO- --no-check-certificate https://ftp.exim.org/pub/pcre/${PCRE2}.tar.gz | tar -xz
