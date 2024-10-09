@@ -3,7 +3,7 @@ name: Nginx-CI
 on:
   push:
     branches: 
-      - master
+      - main
 
 env:
     PCRE: pcre-8.45
