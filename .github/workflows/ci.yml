@@ -5,7 +5,7 @@ on:
 
 env:
     PCRE: pcre-8.45
-    PCRE2: pcre2-10.37
+    PCRE2: pcre2-10.44
 
 jobs:
   nginx_126x_amd64:
@@ -32,7 +32,7 @@ jobs:
           ZLIB=$(wget -qO- --no-check-certificate https://zlib.net/ | grep -m1 -E "zlib-([0-9]+\.){0,3}tar.gz" | sed -E "s/.*(zlib-.*).tar.gz.*/\1/gm" )
           wget -qO- --no-check-certificate https://nginx.org/download/${NGINX}.tar.gz | tar -xz
           wget -qO- --no-check-certificate https://github.com/openssl/openssl/releases/download/${OPENSSL}/${OPENSSL}.tar.gz | tar -xz
-          wget -qO- --no-check-certificate https://ftp.exim.org/pub/pcre/${PCRE2}.tar.gz | tar -xz
+          wget -qO- --no-check-certificate https://github.com/PCRE2Project/pcre2/releases/download/${PCRE2}/${PCRE2}.tar.gz | tar -xz
           wget -qO- --no-check-certificate https://www.zlib.net/${ZLIB}.tar.gz | tar -xz
           echo "NGINX=${NGINX}" >> $GITHUB_ENV
 
