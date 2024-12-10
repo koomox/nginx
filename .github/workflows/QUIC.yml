@@ -55,8 +55,7 @@ jobs:
           --with-stream_ssl_module \
           --with-pcre=../${PCRE2} \
           --with-zlib=../${ZLIB} \
-          --with-openssl=../quiche/quiche/deps/boringssl \
-          --with-quiche=../quiche \
+          --with-openssl=../quiche/quiche/deps/boringssl
           make
 
       - name: Configure
