@@ -25,6 +25,10 @@ jobs:
           sudo -E apt-get clean
           df -h
 
+      - name: quiche
+        run: |
+          git clone https://github.com/cloudflare/quiche
+
       - name: Build
         run: |
           NGINX=$(wget -qO- --no-check-certificate https://nginx.org/en/download.html | grep -m1 -E "nginx-1.26.([0-9]+).tar.gz" | sed -E "s/.*(nginx-1.26.[0-9]+).tar.gz.*/\1/gm" )
@@ -52,7 +56,8 @@ jobs:
           --with-stream_quic_module \
           --with-pcre=../${PCRE2} \
           --with-zlib=../${ZLIB} \
-          --with-openssl=../${OPENSSL}
+          --with-openssl=../quiche/quiche/deps/boringssl \
+          --with-quiche=../quiche \
           make
 
       - name: Configure
