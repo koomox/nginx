@@ -1,4 +1,4 @@
-name: Nginx 1.28.x arm
+name: Nginx 1.28.x amd64
 
 on:
   workflow_dispatch:
@@ -8,8 +8,8 @@ env:
 
 jobs:
   build-nginx:
-    name: ubuntu-22.04-arm
-    runs-on: ubuntu-22.04-arm
+    name: ubuntu-22.04 amd64
+    runs-on: ubuntu-22.04
 
     steps:
       - name: Checkout
