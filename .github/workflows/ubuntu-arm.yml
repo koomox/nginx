@@ -88,5 +88,5 @@ jobs:
       - name: Upload
         uses: actions/upload-artifact@master
         with:
-          name: ${{ env.NGINX }}${{ env.FILE_DATE }}
+          name: ${{ env.NGINX }}_arm${{ env.FILE_DATE }}
           path: ./targets/
