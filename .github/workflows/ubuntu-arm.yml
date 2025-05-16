@@ -1,4 +1,4 @@
-name: Nginx arm
+name: Nginx 1.26.x arm
 
 on:
   workflow_dispatch:
@@ -8,8 +8,8 @@ env:
     PCRE2: pcre2-10.44
 
 jobs:
-  nginx_126x_arm:
-    name: Nginx 1.26.x on ubuntu-22.04-arm
+  build-nginx:
+    name: ubuntu-22.04-arm
     runs-on: ubuntu-22.04-arm
 
     steps:
