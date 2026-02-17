@@ -1,15 +1,24 @@
-name: Nginx 1.28.x amd64
+name: Nginx 1.28.x Build
 
 on:
   workflow_dispatch:
+    inputs:
+      arch:
+        description: 'Select Build Architecture'
+        required: true
+        default: 'amd64'
+        type: choice
+        options:
+          - amd64
+          - arm64
 
 env:
     PCRE2: pcre2-10.47
 
 jobs:
   build-nginx:
-    name: ubuntu-22.04 amd64
-    runs-on: ubuntu-22.04
+    name: ubuntu-22.04-${{ github.event.inputs.arch }}
+    runs-on: ${{ github.event.inputs.arch == 'arm64' && 'ubuntu-22.04-arm' || 'ubuntu-22.04' }}
 
     steps:
       - name: Checkout
@@ -88,5 +97,5 @@ jobs:
       - name: Upload
         uses: actions/upload-artifact@master
         with:
-          name: ${{ env.NGINX }}_amd64${{ env.FILE_DATE }}
+          name: ${{ env.NGINX }}_${{ github.event.inputs.arch }}${{ env.FILE_DATE }}
           path: ./targets/
