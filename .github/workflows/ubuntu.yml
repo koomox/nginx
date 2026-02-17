@@ -12,6 +12,11 @@ on:
         options:
           - amd64
           - arm64
+      enable_h3:
+        description: 'Enable HTTP/3 (QUIC) Module'
+        required: true
+        type: boolean
+        default: true
 
 env:
     PCRE2: pcre2-10.47
@@ -45,8 +50,7 @@ jobs:
           wget -qO- --no-check-certificate https://www.zlib.net/${ZLIB}.tar.gz | tar -xz
           echo "NGINX=${NGINX}" >> $GITHUB_ENV
 
-          cd ${NGINX}
-          ./configure --prefix=/usr/local/nginx \
+          CONF_ARGS="--prefix=/usr/local/nginx \
           --conf-path=/etc/nginx/nginx.conf \
           --pid-path=/var/lib/nginx/nginx.pid \
           --lock-path=/var/lib/nginx/nginx.lock \
@@ -60,7 +64,14 @@ jobs:
           --with-stream_ssl_module \
           --with-pcre=../${PCRE2} \
           --with-zlib=../${ZLIB} \
-          --with-openssl=../${OPENSSL}
+          --with-openssl=../${OPENSSL}"
+
+          if [ "${{ github.event.inputs.enable_h3 }}" = "true" ]; then
+            CONF_ARGS="$CONF_ARGS --with-http_v3_module"
+          fi
+
+          cd ${NGINX}
+          ./configure $CONF_ARGS
           make
 
       - name: Configure
