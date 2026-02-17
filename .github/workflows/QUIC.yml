@@ -1,15 +1,25 @@
 name: H3-QUIC
+run-name: Build Nginx H3-QUIC for ${{ github.event.inputs.arch }}
 
 on:
   workflow_dispatch:
+    inputs:
+      arch:
+        description: 'Select Build Architecture'
+        required: true
+        default: 'amd64'
+        type: choice
+        options:
+          - amd64
+          - arm64
 
 env:
-    PCRE2: pcre2-10.44
+    PCRE2: pcre2-10.47
 
 jobs:
-  nginx_quic:
-    name: Nginx 1.26.x on QUIC
-    runs-on: ubuntu-20.04
+  build-nginx:
+    name: ubuntu-22.04-${{ github.event.inputs.arch }}
+    runs-on: ${{ github.event.inputs.arch == 'arm64' && 'ubuntu-22.04-arm' || 'ubuntu-22.04' }}
 
     steps:
       - name: Checkout
@@ -24,10 +34,9 @@ jobs:
           sudo -E apt-get -y autoremove --purge
           sudo -E apt-get clean
           df -h
-
       - name: Build
         run: |
-          NGINX=$(wget -qO- --no-check-certificate https://nginx.org/en/download.html | grep -m1 -E "nginx-1.26.([0-9]+).tar.gz" | sed -E "s/.*(nginx-1.26.[0-9]+).tar.gz.*/\1/gm" )
+          NGINX=$(wget -qO- --no-check-certificate https://nginx.org/en/download.html | grep -m1 -E "nginx-1.28.([0-9]+).tar.gz" | sed -E "s/.*(nginx-1.28.[0-9]+).tar.gz.*/\1/gm" )
           OPENSSL=$(wget -qO- --no-check-certificate https://www.openssl-library.org/source/ | grep -m1 -E "openssl-3(\.[0-9]+){0,2}.tar.gz" | sed -E "s/.*(openssl-.*).tar.gz.*/\1/gm" )
           ZLIB=$(wget -qO- --no-check-certificate https://zlib.net/ | grep -m1 -E "zlib-([0-9]+\.){0,3}tar.gz" | sed -E "s/.*(zlib-.*).tar.gz.*/\1/gm" )
           wget -qO- --no-check-certificate https://nginx.org/download/${NGINX}.tar.gz | tar -xz
@@ -90,5 +99,5 @@ jobs:
       - name: Upload
         uses: actions/upload-artifact@master
         with:
-          name: ${{ env.NGINX }}${{ env.FILE_DATE }}
+          name: ${{ env.NGINX }}_${{ github.event.inputs.arch }}${{ env.FILE_DATE }}
           path: ./targets/
