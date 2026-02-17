@@ -1,4 +1,5 @@
 name: Nginx 1.28.x Build
+run-name: Build Nginx 1.28.x for ${{ github.event.inputs.arch }}
 
 on:
   workflow_dispatch:
