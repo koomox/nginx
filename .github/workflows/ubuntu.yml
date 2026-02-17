@@ -1,5 +1,5 @@
 name: Nginx 1.28.x Build
-run-name: Build Nginx 1.28.x for ${{ github.event.inputs.arch }}
+run-name: Build Nginx 1.28.x${{ github.event.inputs.enable_h3 == 'true' && ' (H3-QUIC)' || '' }} for ${{ github.event.inputs.arch }}
 
 on:
   workflow_dispatch:
